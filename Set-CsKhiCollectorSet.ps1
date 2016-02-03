@@ -12,11 +12,13 @@ Set-CsKhiCollectorSet.ps1 script start, stop or get status on KHI data collector
      is allowed in Windows Firewall on the remote computer
 
     V1.0 February 2015 Initial version
+    V1.1 February 2016 Fixed isedge function
 .Link
    Twitter: http://www.twitter.com/ti83
    LinkedIn: http://www.linkedin.com/in/tomingelarsen
    Blog: http://blog.codesalot.com
-   Current Release: V1.0
+   Current Release: V1.1
+   https://github.com/tomlarse/Set-CsKhiCollectorSet
 .EXAMPLE
    Set-CSKhiCollectorSet.ps1 -Start
    Description:
@@ -59,7 +61,10 @@ param([Parameter(Mandatory = $false)]
 function isedge($fqdn) {
     $computer = Get-CsComputer $fqdn
     $pool = Get-CsPool $computer.pool
-    return $pool.Services.Contains("EdgeServer:" + $computer.pool)
+    $edge = $false
+    foreach ($obj in $pool.Services) {
+        if ($obj.Contains("EdgeServer:" + $computer.pool)) {$edge = $true}
+    }
 }
 
 function ResetCredentials {
