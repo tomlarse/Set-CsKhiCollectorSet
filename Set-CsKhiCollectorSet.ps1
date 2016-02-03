@@ -65,6 +65,7 @@ function isedge($fqdn) {
     foreach ($obj in $pool.Services) {
         if ($obj.Contains("EdgeServer:" + $computer.pool)) {$edge = $true}
     }
+    return $edge
 }
 
 function ResetCredentials {
